@@ -15,8 +15,13 @@ RUN apt-get update && apt-get upgrade -y
 # Install required packages
 RUN apt-get install -y \
     python3-pip \
+    python3-venv \
+    python3-full \
     wget \
-    && pip3 install --upgrade pip
+    && mkdir -p /opt/venv \
+    && python3 -m venv /opt/venv \
+    && /opt/venv/bin/pip install --upgrade pip \
+    && /opt/venv/bin/pip install mt5linux pyxdg
 
 # Add WineHQ repository key and APT source
 RUN wget -q https://dl.winehq.org/wine-builds/winehq.key \
@@ -34,7 +39,7 @@ RUN apt-get install --install-recommends -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-
+# Copy files into container
 COPY /Metatrader /Metatrader
 RUN chmod +x /Metatrader/start.sh
 COPY /root /

@@ -25,7 +25,7 @@ check_dependency() {
 
 # Function to check if a Python package is installed
 is_python_package_installed() {
-    python3 -c "import pkg_resources; exit(not pkg_resources.require('$1'))" 2>/dev/null
+    /opt/venv/bin/python -c "import pkg_resources; exit(not pkg_resources.require('$1'))" 2>/dev/null
     return $?
 }
 
@@ -100,21 +100,9 @@ if ! is_wine_python_package_installed "mt5linux"; then
     $wine_executable python -m pip install --no-cache-dir mt5linux
 fi
 
-# Install mt5linux library in Linux if not installed
-show_message "[6/7] Checking and installing mt5linux library in Linux if necessary"
-if ! is_python_package_installed "mt5linux"; then
-    pip install --upgrade --no-cache-dir mt5linux
-fi
-
-# Install pyxdg library in Linux if not installed
-show_message "[6/7] Checking and installing pyxdg library in Linux if necessary"
-if ! is_python_package_installed "pyxdg"; then
-    pip install --upgrade --no-cache-dir pyxdg
-fi
-
 # Start the MT5 server on Linux
 show_message "[7/7] Starting the mt5linux server..."
-python3 -m mt5linux --host 0.0.0.0 -p $mt5server_port -w $wine_executable python.exe &
+/opt/venv/bin/python -m mt5linux --host 0.0.0.0 -p $mt5server_port -w $wine_executable python.exe &
 
 # Give the server some time to start
 sleep 5
