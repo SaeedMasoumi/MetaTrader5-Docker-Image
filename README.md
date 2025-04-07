@@ -13,13 +13,6 @@ This project provides a Docker image for running MetaTrader5 with remote access 
 
 ----------
 
-**NOTICE:**
-Due to some compatibility issued, version 2 has switched its base from Alpine to Debian Linux. This and adding Python environment makes that container size is considerably bigger from about 600 MB to 4 GB.
-
-If you just need to run Metatrader for running your MQL5 programs without any Python programming I recommend to go on using version 1.0. MetaTrader program is updated independently from image so you will always have latest MT5 version.
-
------------
-
 ## Requirements
 
 - Docker installed on your machine.
@@ -29,7 +22,7 @@ If you just need to run Metatrader for running your MQL5 programs without any Py
 
 1. Clone this repository:
 ```bash
-git clone https://github.com/gmag11/MetaTrader5-Docker-Image
+git clone https://github.com/saeedmasoumi/MetaTrader5-Docker-Image
 cd MetaTrader5-Docker-Image
 ```
 
@@ -67,7 +60,7 @@ version: '3'
 
 services:
   mt5:
-    image: gmag11/metatrader5_vnc
+    image: saeedmasoumi/metatrader5_vnc
     container_name: mt5
     volumes:
       - ./config:/config
@@ -77,19 +70,6 @@ services:
     environment:
       - CUSTOM_USER=<Choose a user>
       - PASSWORD=<Choose a secure password>
-```
-
-**Notice**: If you do not need to do remote python programming you can get a much smaller installation changing this line:
-
-```yaml
-image: gmag11/metatrader5_vnc
-```
-
-by this one
-
-
-```yaml
-image: gmag11/metatrader5_vnc:1.0
 ```
 
 3. Start the container
