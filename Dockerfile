@@ -12,21 +12,42 @@ ENV WINEPREFIX="/config/.wine"
 # Update package lists and upgrade packages
 RUN apt-get update && apt-get upgrade -y
 
-# Install required packages
+# Install required packages and dependencies for Python 3.9 compilation
 RUN apt-get install -y \
-    python3-pip \
-    python3-venv \
-    python3-full \
     wget \
-    && mkdir -p /opt/venv \
-    && python3 -m venv /opt/venv \
+    build-essential \
+    zlib1g-dev \
+    libncurses5-dev \
+    libgdbm-dev \
+    libnss3-dev \
+    libssl-dev \
+    libreadline-dev \
+    libffi-dev \
+    libsqlite3-dev \
+    libbz2-dev \
+    curl
+
+# Download and install Python 3.9
+RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz \
+    && tar -xf Python-3.9.16.tgz \
+    && cd Python-3.9.16 \
+    && ./configure --enable-optimizations --prefix=/usr/local/python3.9 \
+    && make -j $(nproc) \
+    && make altinstall \
+    && cd .. \
+    && rm -rf Python-3.9.16 Python-3.9.16.tgz
+
+# Create virtual environment with Python 3.9 and install mt5linux
+RUN mkdir -p /opt/venv \
+    && /usr/local/python3.9/bin/python3.9 -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
     && /opt/venv/bin/pip install mt5linux pyxdg
 
 # Add WineHQ repository key and APT source
 RUN wget -q https://dl.winehq.org/wine-builds/winehq.key \
     && apt-key add winehq.key \
-    && add-apt-repository 'deb https://dl.winehq.org/wine-builds/debian/ bookworm main' \
+    && apt-get install -y software-properties-common \
+    && apt-add-repository 'deb https://dl.winehq.org/wine-builds/debian/ bookworm main' \
     && rm winehq.key
 
 # Add i386 architecture and update package lists
