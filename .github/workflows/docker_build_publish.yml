@@ -8,6 +8,9 @@ jobs:
   build_and_push:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+      - uses: actions/checkout@v3
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       
@@ -40,7 +43,10 @@ jobs:
           # file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags:  gmag11/metatrader5_vnc:${{ env.VERSION }},gmag11/metatrader5_vnc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/metatrader5_vnc:${{ env.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/metatrader5_vnc:latest
+          build-args: |
+            BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+            VERSION=${{ env.VERSION }}
           # cache-from: type=local,src=/tmp/.buildx-cache
           # cache-to: type=local,dest=/tmp/.buildx-cache
 

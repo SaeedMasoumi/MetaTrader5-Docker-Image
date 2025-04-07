@@ -1,10 +1,10 @@
-FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbullseye
+FROM ghcr.io/linuxserver/baseimage-kasmvnc:debianbookworm
 
 # set version label
 ARG BUILD_DATE
 ARG VERSION
 LABEL build_version="Metatrader Docker:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="gmartin"
+LABEL maintainer="saeed"
 
 ENV TITLE=Metatrader5
 ENV WINEPREFIX="/config/.wine"
@@ -21,7 +21,7 @@ RUN apt-get install -y \
 # Add WineHQ repository key and APT source
 RUN wget -q https://dl.winehq.org/wine-builds/winehq.key \
     && apt-key add winehq.key \
-    && add-apt-repository 'deb https://dl.winehq.org/wine-builds/debian/ bullseye main' \
+    && add-apt-repository 'deb https://dl.winehq.org/wine-builds/debian/ bookworm main' \
     && rm winehq.key
 
 # Add i386 architecture and update package lists
