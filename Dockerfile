@@ -8,6 +8,7 @@ LABEL maintainer="saeed"
 
 ENV TITLE=Metatrader5
 ENV WINEPREFIX="/config/.wine"
+ENV WINEARCH=win64
 
 # Update package lists and upgrade packages
 RUN apt-get update && apt-get upgrade -y

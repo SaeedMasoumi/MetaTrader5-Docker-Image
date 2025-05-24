@@ -3,11 +3,12 @@
 # Configuration variables
 mt5file='/config/.wine/drive_c/Program Files/MetaTrader 5/terminal64.exe'
 WINEPREFIX='/config/.wine'
+export WINEARCH=win64
 wine_executable="wine"
 metatrader_version="5.0.4874"
 mt5server_port="8001"
 mono_url="https://dl.winehq.org/wine/wine-mono/10.0.0/wine-mono-10.0.0-x86.msi"
-python_url="https://www.python.org/ftp/python/3.9.0/python-3.9.0.exe"
+python_url="https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe"
 mt5setup_url="https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe"
 
 # Function to display a graphical message
@@ -39,6 +40,15 @@ is_wine_python_package_installed() {
 check_dependency "curl"
 check_dependency "$wine_executable"
 
+# Initialize Wine prefix if it doesn't exist
+if [ ! -d "/config/.wine" ]; then
+    show_message "[0/7] Initializing Wine prefix in 64-bit mode..."
+    $wine_executable wineboot --init
+fi
+
+# Ensure Wine is set to Windows 10 mode and 64-bit
+$wine_executable reg add "HKEY_CURRENT_USER\\Software\\Wine" /v Version /t REG_SZ /d "win10" /f
+
 # Install Mono if not present
 if [ ! -e "/config/.wine/drive_c/windows/mono" ]; then
     show_message "[1/7] Downloading and installing Mono..."
@@ -56,8 +66,7 @@ if [ -e "$mt5file" ]; then
 else
     show_message "[2/7] File $mt5file is not installed. Installing..."
 
-    # Set Windows 10 mode in Wine and download and install MT5
-    $wine_executable reg add "HKEY_CURRENT_USER\\Software\\Wine" /v Version /t REG_SZ /d "win10" /f
+    # Download and install MT5
     show_message "[3/7] Downloading MT5 installer..."
     curl -o /config/.wine/drive_c/mt5setup.exe $mt5setup_url
     show_message "[3/7] Installing MetaTrader 5..."
@@ -74,14 +83,13 @@ else
     show_message "[4/7] File $mt5file is not installed. MT5 cannot be run."
 fi
 
-
-# Install Python in Wine if not present
+# Install Python in Wine if not present (64-bit version)
 if ! $wine_executable python --version 2>/dev/null; then
-    show_message "[5/7] Installing Python in Wine..."
+    show_message "[5/7] Installing 64-bit Python in Wine..."
     curl -L $python_url -o /tmp/python-installer.exe
     $wine_executable /tmp/python-installer.exe /quiet InstallAllUsers=1 PrependPath=1
     rm /tmp/python-installer.exe
-    show_message "[5/7] Python installed in Wine."
+    show_message "[5/7] 64-bit Python installed in Wine."
 else
     show_message "[5/7] Python is already installed in Wine."
 fi
