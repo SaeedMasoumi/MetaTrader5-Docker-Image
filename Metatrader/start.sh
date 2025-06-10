@@ -5,10 +5,10 @@ mt5file='/config/.wine/drive_c/Program Files/MetaTrader 5/terminal64.exe'
 WINEPREFIX='/config/.wine'
 export WINEARCH=win64
 wine_executable="wine"
-metatrader_version="5.0.4874"
+metatrader_version="5.0.5050"
 mt5server_port="8001"
 mono_url="https://dl.winehq.org/wine/wine-mono/10.0.0/wine-mono-10.0.0-x86.msi"
-python_url="https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe"
+python_url="https://www.python.org/ftp/python/3.13.4/python-3.13.4-amd64.exe"
 mt5setup_url="https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe"
 
 # Function to display a graphical message
@@ -105,13 +105,13 @@ fi
 # Install mt5linux library in Windows if not installed
 show_message "[6/7] Checking and installing mt5linux library in Windows if necessary"
 if ! is_wine_python_package_installed "mt5linux"; then
-    $wine_executable python -m pip install --no-cache-dir mt5linux
+    $wine_executable python -m pip install --no-cache-dir pymt5linux
 fi
 
 # Start the MT5 server on Linux
 show_message "[7/7] Starting the mt5linux server..."
 # Using the specific Python 3.9 from our virtual environment
-/opt/venv/bin/python -m mt5linux --host 0.0.0.0 -p $mt5server_port -w $wine_executable python.exe &
+/opt/venv/bin/python -m pymt5linux --host 0.0.0.0 --port $mt5server_port -w $wine_executable python.exe &
 
 # Give the server some time to start
 sleep 5

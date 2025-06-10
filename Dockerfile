@@ -29,20 +29,20 @@ RUN apt-get install -y \
     curl
 
 # Download and install Python 3.9
-RUN wget https://www.python.org/ftp/python/3.9.16/Python-3.9.16.tgz \
-    && tar -xf Python-3.9.16.tgz \
-    && cd Python-3.9.16 \
-    && ./configure --enable-optimizations --prefix=/usr/local/python3.9 \
+RUN wget https://www.python.org/ftp/python/3.13.4/Python-3.13.4.tgz \
+    && tar -xf Python-3.13.4.tgz \
+    && cd Python-3.13.4 \
+    && ./configure --enable-optimizations --prefix=/usr/local/python3.13 \
     && make -j $(nproc) \
     && make altinstall \
     && cd .. \
-    && rm -rf Python-3.9.16 Python-3.9.16.tgz
+    && rm -rf Python-3.13.4 Python-3.13.4.tgz
 
-# Create virtual environment with Python 3.9 and install mt5linux
+# Create virtual environment with Python 3.13 and install mt5linux
 RUN mkdir -p /opt/venv \
-    && /usr/local/python3.9/bin/python3.9 -m venv /opt/venv \
+    && /usr/local/python3.13/bin/python3.13 -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install mt5linux pyxdg
+    && /opt/venv/bin/pip install pymt5linux pyxdg
 
 # Add WineHQ repository key and APT source
 RUN wget -q https://dl.winehq.org/wine-builds/winehq.key \

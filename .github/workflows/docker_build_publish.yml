@@ -43,7 +43,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/metatrader5_vnc:${{ env.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/metatrader5_vnc:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/metatrader5:${{ env.VERSION }},${{ secrets.DOCKERHUB_USERNAME }}/metatrader5_vnc:latest
           build-args: |
             BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
             VERSION=${{ env.VERSION }}
