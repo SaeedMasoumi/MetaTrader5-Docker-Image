@@ -47,8 +47,7 @@ RUN mkdir -p /opt/venv \
     && /usr/local/python3.13/bin/python3.13 -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
     && /opt/venv/bin/pip install pymt5linux pyxdg \
-    && mkdir -p /opt/venv/lib/python3.13/site-packages/tmp \
-    && chmod -R 755 /opt/venv
+    && chmod -R 777 /opt/venv
 
 # Add WineHQ repository key and APT source
 RUN wget -q https://dl.winehq.org/wine-builds/winehq.key \
