@@ -13,7 +13,7 @@ ENV WINEARCH=win64
 # Update package lists and upgrade packages
 RUN apt-get update && apt-get upgrade -y
 
-# Install required packages and dependencies for Python 3.9 compilation
+# Install required packages and dependencies for Python 3.13 compilation
 RUN apt-get install -y \
     wget \
     build-essential \
@@ -28,7 +28,7 @@ RUN apt-get install -y \
     libbz2-dev \
     curl
 
-# Download and install Python 3.9
+# Download and install Python 3.13
 RUN wget https://www.python.org/ftp/python/3.13.4/Python-3.13.4.tgz \
     && tar -xf Python-3.13.4.tgz \
     && cd Python-3.13.4 \
@@ -42,7 +42,9 @@ RUN wget https://www.python.org/ftp/python/3.13.4/Python-3.13.4.tgz \
 RUN mkdir -p /opt/venv \
     && /usr/local/python3.13/bin/python3.13 -m venv /opt/venv \
     && /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install pymt5linux pyxdg
+    && /opt/venv/bin/pip install pymt5linux pyxdg \
+    && mkdir -p /opt/venv/lib/python3.13/site-packages/tmp \
+    && chmod -R 755 /opt/venv
 
 # Add WineHQ repository key and APT source
 RUN wget -q https://dl.winehq.org/wine-builds/winehq.key \
