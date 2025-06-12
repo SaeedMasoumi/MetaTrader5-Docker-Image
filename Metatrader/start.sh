@@ -111,7 +111,7 @@ fi
 # Start the MT5 server on Linux
 show_message "[7/7] Starting the mt5linux server..."
 # Using the specific Python 3.9 from our virtual environment
-/opt/venv/bin/python -m pymt5linux --host 0.0.0.0 --port $mt5server_port -w $wine_executable python.exe &
+/opt/venv/bin/python -m pymt5linux --host 0.0.0.0 --port $mt5server_port "$wine_executable python.exe" &
 
 # Give the server some time to start
 sleep 5
