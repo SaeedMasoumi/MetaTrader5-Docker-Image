@@ -10,6 +10,10 @@ ENV TITLE=Metatrader5
 ENV WINEPREFIX="/config/.wine"
 ENV WINEARCH=win64
 
+ENV TMPDIR=/tmp
+ENV TMP=/tmp
+ENV TEMP=/tmp
+
 # Update package lists and upgrade packages
 RUN apt-get update && apt-get upgrade -y
 
